@@ -56,7 +56,7 @@ def test_value_model(model,test_dataloader):
 if __name__ == '__main__':
     net = GoogLeNet(Inception)
 
-    net.load_state_dict(torch.load('./save_model/model.pth'))
+    net.load_state_dict(torch.load('./save_model/googel_model.pth'))
     test_loder = test_VGG_data_process()
     test_model(net,test_loder)
     # test_value_model(net,test_loder)
