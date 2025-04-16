@@ -2,7 +2,7 @@ import copy
 import time
 
 import torch
-from torchvision.datasets import ImageFolder
+from torchvision.datasets import ImageFolder,FashionMNIST
 from torchvision import transforms
 import torch.utils.data as Data
 import numpy as np
@@ -17,15 +17,22 @@ from GoogLeNet.model import GoogLeNet,Inception
 from ResNet.model import ResNet,Resiual
 from ResNet18_with_mask.model import ResNet18,Residual
 
-def train_val_data_process():
+def train_val_data_process(witchtype='fashion'):
+    if witchtype == 'fashion':
+    # 使用FashionMNIST中的数据集
+        train_data = FashionMNIST(root='../dataset',
+                             train=True,
+                             download=True,
+                             transform=transforms.Compose([transforms.ToTensor(), transforms.Resize(227)]))
+    else:
     # 定义数据集的路径
-    ROOT_TRAIN = r'data\train'
+        ROOT_TRAIN = r'data\train'
 
-    normalize = transforms.Normalize([0.0420662,  0.04281093, 0.04413987], [0.03315472, 0.03433457, 0.03628447])
-    # 定义数据集处理方法变量
-    train_transform = transforms.Compose([transforms.Resize((224, 224)), transforms.ToTensor(), normalize])
-    # 加载数据集
-    train_data = ImageFolder(ROOT_TRAIN, transform=train_transform)
+        normalize = transforms.Normalize([0.0420662,  0.04281093, 0.04413987], [0.03315472, 0.03433457, 0.03628447])
+        # 定义数据集处理方法变量
+        train_transform = transforms.Compose([transforms.Resize((224, 224)), transforms.ToTensor(), normalize])
+        # 加载数据集
+        train_data = ImageFolder(ROOT_TRAIN, transform=train_transform)
 
     train_data, val_data = Data.random_split(train_data, [round(0.8*len(train_data)), round(0.2*len(train_data))])
     train_dataloader = Data.DataLoader(dataset=train_data,

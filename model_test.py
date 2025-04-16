@@ -6,15 +6,22 @@ from model import ResNet18, Residual
 from torchvision.datasets import ImageFolder
 from PIL import Image
 
-def test_data_process():
-    # 定义数据集的路径
-    ROOT_TRAIN = r'data\test'
+def test_data_process(whichtype='fashio'):
+    if whichtype == 'fashio':
+        test_data = FashionMNIST(root='../dataset',
+                            train=False,
+                            download=True,
+                            transform=transforms.Compose([transforms.ToTensor(), transforms.Resize(227)]))
+    else:
 
-    normalize = transforms.Normalize([0.0420662, 0.04281093, 0.04413987], [0.03315472, 0.03433457, 0.03628447])
+        # 定义数据集的路径
+        ROOT_TRAIN = r'data\test'
+
+        normalize = transforms.Normalize([0.0420662, 0.04281093, 0.04413987], [0.03315472, 0.03433457, 0.03628447])
     # 定义数据集处理方法变量
-    test_transform = transforms.Compose([transforms.Resize((224, 224)), transforms.ToTensor(), normalize])
+        test_transform = transforms.Compose([transforms.Resize((224, 224)), transforms.ToTensor(), normalize])
     # 加载数据集
-    test_data = ImageFolder(ROOT_TRAIN, transform=test_transform)
+        test_data = ImageFolder(ROOT_TRAIN, transform=test_transform)
 
     test_dataloader = Data.DataLoader(dataset=test_data,
                                        batch_size=1,
